@@ -1,0 +1,14 @@
+FROM centos:7.3.1611
+
+RUN yum install -y autoconf automake libtool curl make unzip gcc-c++ glibc-devel
+
+COPY protobuf-cpp-3.11.2.tar.gz /root/
+RUN tar xzf /root/protobuf-cpp-3.11.2.tar.gz -C /usr/local/ &&\
+    ln -s /usr/local/protobuf-3.11.2 /usr/local/protobuf
+
+WORKDIR /usr/local/protobuf
+RUN ./autogen.sh
+RUN ./configure
+RUN make
+RUN make check
+RUN make install && ldconfig
